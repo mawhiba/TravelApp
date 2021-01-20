@@ -7,22 +7,17 @@ import {
 
 //Async function
 const postData = async (url = "", data = {}) => {
-  console.log("hello from postData");
-  console.log(data);
-  const response = await fetch(url, {
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    credentials: "same-origin",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data), // body data type must match "Content-Type" header
-  });
-  console.log("After fetching");
   try {
-    const tripData = await response.json();
-    console.log("trip data");
-    console.log(tripData);
-    return tripData;
+    console.log("hello from postData");
+    console.log(data);
+    const response = await fetch(url, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data), // body data type must match "Content-Type" header
+    });
   } catch (error) {
     console.log("error", error);
   }
@@ -30,25 +25,31 @@ const postData = async (url = "", data = {}) => {
 
 /* Function to GET Project Data */
 const updateUI = async () => {
-  const request = await fetch("/all");
+  const request = await fetch("http://localhost:8081/all");
   try {
-    const allData = await request.json();
-    console.log("All data is :");
-    console.log(allData);
-    document.getElementById("results").innerHTML = JSON.stringify(allData);
+    // const allData = await request.json();
+    // console.log("All data is :");
+    // console.log(allData);
+    // document.getElementById("results").innerHTML = JSON.stringify(allData);
+    const response = await request.json();
+    let location = response[0]; 
+    console.log(response);
 
-    //results:
-    // let img = document.getElementById("city_image");
-    // img.setAttribute('src',location.image);
-    // img.setAttribute('width', '200');
-    // img.setAttribute('height', '200');
-    // let saveBtn = document.createElement('button');
-    // let cancelBtn = document.createElement('button');
-    // saveBtn.textContent = 'Save';
-    // cancelBtn.textContent = 'Cancel';
-    // let results = document.getElementById('results');
-    // results.appendChild(saveBtn);
-    // results.appendChild(cancelBtn);
+    
+    let img = document.getElementById("city_image");
+    img.setAttribute("src", location.image);
+    img.setAttribute("width", "200");
+    img.setAttribute("height", "200");
+    document.getElementById("title").innerHTML =
+      "Your trip to: " + location.cityName + ", " + location.countryName;
+    document.getElementById("departing").innerHTML = "Departing: " + location.dateFrom;
+    document.getElementById("tripDuration").innerHTML =
+      "Trip duration: " + location.tripDuration;
+    document.getElementById("text").style.display = "block";
+    document.getElementById("temp").innerHTML =
+      "High " + location.highTemp + ",  Low " + location.lowTemp;
+    document.getElementById("weather_desc").innerHTML =
+      location.weatherDescription;
   } catch (error) {
     console.log("Error", error);
   }
@@ -64,19 +65,26 @@ const handleSubmit = async (event) => {
   const dateTo = document.getElementById("to").value;
   let location = {};
 
-  var isInputValid = Client.checkForName(cityName);
-
-  if (!isInputValid) {
-    alert("Please enter a city name");
+  var isNameValid = Client.checkForName(cityName);
+  // var isDateFromValid = Client.checkForDates(dateFrom);
+  // var isDateToValid = Client.checkForDates(dateFrom);
+  
+  // if (!isNameValid || isDateFromValid !== null || isDateToValid !== null) {
+  if (!isNameValid) {
+    alert("Please fill all fields");
   } else {
     try {
       //Calling the geoNames API to git the longitude and latitude:
       location = await getLocation(cityName);
+      location.cityName = cityName;
+      location.dateFrom = dateFrom;
+      location.dateTo = dateTo;
 
       //Get the date difference:
       const tripDuration = getTheDifference(dateFrom, dateTo);
       const currentDate = new Date();
       const daysRemaining = getTheDifference(currentDate, dateFrom);
+      location.tripDuration = tripDuration;
 
       //Calling the Weatherbit API to get the weather info:
       if (daysRemaining <= 7) {
@@ -109,26 +117,25 @@ const handleSubmit = async (event) => {
 
       //Post trip info:
       console.log("Location object : " + JSON.stringify(location));
-      postData("http://localhost:8081/postInfo", location);
-      // .then(
-      //   function() {updateUI()}
-      // );
+      postData("http://localhost:8081/postInfo", location).then(function () {
+        updateUI();
+      });
 
       //results:
-      let img = document.getElementById("city_image");
-      img.setAttribute("src", location.image);
-      img.setAttribute("width", "200");
-      img.setAttribute("height", "200");
-      document.getElementById("title").innerHTML =
-        "Your trip to: " + cityName + ", " + location.countryName;
-      document.getElementById("departing").innerHTML = "Departing: " + dateFrom;
-      document.getElementById("tripDuration").innerHTML =
-        "Trip duration: " + tripDuration;
-      document.getElementById("text").style.display = "block";
-      document.getElementById("temp").innerHTML =
-        "High " + location.highTemp + ",  Low " + location.lowTemp;
-      document.getElementById("weather_desc").innerHTML =
-        location.weatherDescription;
+      // let img = document.getElementById("city_image");
+      // img.setAttribute("src", location.image);
+      // img.setAttribute("width", "200");
+      // img.setAttribute("height", "200");
+      // document.getElementById("title").innerHTML =
+      //   "Your trip to: " + cityName + ", " + location.countryName;
+      // document.getElementById("departing").innerHTML = "Departing: " + dateFrom;
+      // document.getElementById("tripDuration").innerHTML =
+      //   "Trip duration: " + tripDuration;
+      // document.getElementById("text").style.display = "block";
+      // document.getElementById("temp").innerHTML =
+      //   "High " + location.highTemp + ",  Low " + location.lowTemp;
+      // document.getElementById("weather_desc").innerHTML =
+      //   location.weatherDescription;
 
       // let saveBtn = document.createElement('button');
       // let cancelBtn = document.createElement('button');

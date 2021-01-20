@@ -16,4 +16,10 @@ function checkForName(inputText) {
     }
 }
 
-export { checkForName }
+function checkForDates(date) {
+    if (date === null){
+        return false;
+    }
+}
+
+export { checkForName, checkForDates }
