@@ -27,12 +27,9 @@ const postData = async (url = "", data = {}) => {
 const updateUI = async () => {
   const request = await fetch("http://localhost:8081/all");
   try {
-    // const allData = await request.json();
-    // console.log("All data is :");
-    // console.log(allData);
-    // document.getElementById("results").innerHTML = JSON.stringify(allData);
     const response = await request.json();
-    let location = response[0]; 
+    console.log(response);
+    let location = response; 
     console.log(response);
 
     
@@ -120,92 +117,11 @@ const handleSubmit = async (event) => {
       postData("http://localhost:8081/postInfo", location).then(function () {
         updateUI();
       });
-
-      //results:
-      // let img = document.getElementById("city_image");
-      // img.setAttribute("src", location.image);
-      // img.setAttribute("width", "200");
-      // img.setAttribute("height", "200");
-      // document.getElementById("title").innerHTML =
-      //   "Your trip to: " + cityName + ", " + location.countryName;
-      // document.getElementById("departing").innerHTML = "Departing: " + dateFrom;
-      // document.getElementById("tripDuration").innerHTML =
-      //   "Trip duration: " + tripDuration;
-      // document.getElementById("text").style.display = "block";
-      // document.getElementById("temp").innerHTML =
-      //   "High " + location.highTemp + ",  Low " + location.lowTemp;
-      // document.getElementById("weather_desc").innerHTML =
-      //   location.weatherDescription;
-
-      // let saveBtn = document.createElement('button');
-      // let cancelBtn = document.createElement('button');
-      // saveBtn.textContent = 'Save';
-      // cancelBtn.textContent = 'Cancel';
-      // let results = document.getElementById('results');
-      // results.appendChild(saveBtn);
-      // results.appendChild(cancelBtn);
-
-      // console.log("::: Form Submitted :::");
-      // fetch("http://localhost:8081/test?text=" + cityName)
-      //   .then((res) => res.json())
-      //   .then(function (data) {
-      //     console.log(data);
-      //     document.getElementById(
-      //       "results"
-      //     ).innerHTML = `${data.sentence_list[0].text} , Agreement: ${data.agreement} , Confidence : ${data.confidence} , score_tag : ${data.sentence_list[0].score_tag} `;
-      //   });
     } catch (err) {
       alert("Sorry. There was an error in submitting your input\n" + err);
     }
   }
 };
 
-//Getting latitude and longitude
-// function getLocation(cityName) {
-//   const geoNamesURL = 'http://api.geonames.org/searchJSON?formatted=true&q=';
-//   const geoNamesUserName = 'maj89';
-//   const endPoint = geoNamesURL + cityName + '$username=' + geoNamesUserName;
-//   const location = {};
-//   try {
-//     const response = fetch(endPoint);
-//     if(response.ok) {
-//       const jsonObject = response.json();
-//       location.latitude = jsonObject.geonames[0].lat;
-//       location.longitude = jsonObject.geonames[0].lng;
-
-//       return location;
-//     }
-
-//   } catch(error) {
-//     console.log(error);
-//   }
-// }
-
-//Getting weather info
-// function getWeatherInfo(lat, lon) {
-//   const weatherbitURL = 'https://api.weatherbit.io/v2.0/forecast/daily?';
-//   const weatherbitKey = 'a3b7825b1b094fa38bf650a9e10c84a9';
-//   const endPoint = weatherbitURL + 'lat=' + lat + '&lon=' + lon + '&key=' + weatherbitKey;
-
-//   try {
-//     const response = fetch(endPoint);
-//     if(response.ok) {
-//       const jsonObject = response.json();
-//       console(jsonObject);
-
-//       return jsonObject;
-//     }
-//   } catch(error) {
-//       console.log(error);
-//   }
-
-// }
-
-//Getting image for the city
-// function getCityImage(name) {
-//   const pixabayURL = 'https://pixabay.com/api/?key=19902110-9401cc6104f56ea687a53c5df&q=yellow+flowers&image_type=photo';
-//   const pixabayKey = '19902110-9401cc6104f56ea687a53c5df';
-//   const endPoint = pixabayURL + pixabayKey + '&q=' + name + '&image_type=photo';
-// }
 
 export { handleSubmit };

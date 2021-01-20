@@ -8,12 +8,7 @@ const mockAPIResponse = require('./mockAPI.js')
 const fetch = require('node-fetch')
 
 const app = express()
-projectData = [];
-
-let baseURL = 'https://api.meaningcloud.com/sentiment-2.1?of=json&key='
-// var textapi = new MeaningCloud({
-//     application_key: process.env.API_KEY
-//  });
+projectData = {};
 
 app.use(express.static('dist'))
 app.use(cors())
@@ -47,7 +42,7 @@ function addInfo(request, response){
     console.log('hello from server');
     console.log(request.body);
     
-    projectData.push(request.body);
+    projectData = request.body;
     response.send('Successful');
     // console.log('Project Data is: ')
     // console.log(projectData);
