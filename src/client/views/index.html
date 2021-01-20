@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Test</title>
+    </head>
+
+    <body>
+
+        <header>
+            <div class="">
+                Logo
+            </div>
+            <div class="">
+                navigation
+            </div>
+        </header>
+
+        <main>
+            <section>
+                <!-- <form class="" onsubmit="return Client.handleSubmit(event)"> -->
+                    <label>City name:</label>
+                    <input id="name" type="text" name="input" value="" placeholder="City">
+                    <label>From:</label>
+                    <input id="from" type="date" name="date">
+                    <label>To:</label>
+                    <input id="to" type="date" name="date">
+                    <button id="handleSubmit" type="button">Search</button>
+                    <!-- <input id="handleSubmit" type="submit" name="" value="Search" onclick="return Client.handleSubmit(event)" onsubmit="return handleSubmit(event)">
+             -->
+                </section>
+
+            <section>
+                <strong>My trips :</strong>
+                <div id="results">
+                    <div>
+                        <img id="city_image"/>
+                    </div>
+                    <div id="content">
+                        <p id="title"></p>
+                        <p id="departing"></p>
+                        <p id="tripDuration"></p>
+                        <p id="text">Typical weather for then is: </p>
+                        <p id="weather_desc"></p>
+                        <p id="temp"></p>
+                    </div>
+                    
+                    
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>This is a footer</p>
+        </footer>
+
+        <!-- <script>
+            // Check that service workers are supported
+            if ('serviceWorker' in navigator) {
+                // Use the window load event to keep the page load performant
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/service-worker.js');
+                });
+            }
+        </script> -->
+
+    </body>
+</html>
