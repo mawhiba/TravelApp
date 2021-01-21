@@ -23,23 +23,26 @@ const postData = async (url = "", data = {}) => {
   }
 };
 
-/* Function to GET Project Data */
+/**
+ * @description Get the stored information about the trip from the server and display them to the user
+ */
 const updateUI = async () => {
   const request = await fetch("http://localhost:8081/all");
   try {
     const response = await request.json();
     console.log(response);
-    let location = response; 
+    let location = response;
     console.log(response);
 
-    
+    //Displaying the trip information to the user
     let img = document.getElementById("city_image");
     img.setAttribute("src", location.image);
     img.setAttribute("width", "200");
     img.setAttribute("height", "200");
     document.getElementById("title").innerHTML =
       "Your trip to: " + location.cityName + ", " + location.countryName;
-    document.getElementById("departing").innerHTML = "Departing: " + location.dateFrom;
+    document.getElementById("departing").innerHTML =
+      "Departing: " + location.dateFrom;
     document.getElementById("tripDuration").innerHTML =
       "Trip duration: " + location.tripDuration;
     document.getElementById("text").style.display = "block";
@@ -52,20 +55,24 @@ const updateUI = async () => {
   }
 };
 
+/**
+ * @description This function is used to call all the imported function that call the external API's
+ */
 const handleSubmit = async (event) => {
   event.preventDefault();
 
-  // check what text was put into the form field
+  // Getting the user inputs
   let cityName = document.getElementById("name").value;
   cityName = cityName.charAt(0).toUpperCase() + cityName.slice(1);
   const dateFrom = document.getElementById("from").value;
   const dateTo = document.getElementById("to").value;
+
   let location = {};
 
   var isNameValid = Client.checkForName(cityName);
   // var isDateFromValid = Client.checkForDates(dateFrom);
   // var isDateToValid = Client.checkForDates(dateFrom);
-  
+
   // if (!isNameValid || isDateFromValid !== null || isDateToValid !== null) {
   if (!isNameValid) {
     alert("Please fill all fields");
@@ -112,7 +119,7 @@ const handleSubmit = async (event) => {
       const cityImage = await getCityImage(cityName, location.countryName);
       location.image = cityImage.hits[0].webformatURL;
 
-      //Post trip info:
+      //Post trip info to the server:
       console.log("Location object : " + JSON.stringify(location));
       postData("http://localhost:8081/postInfo", location).then(function () {
         updateUI();
@@ -122,6 +129,5 @@ const handleSubmit = async (event) => {
     }
   }
 };
-
 
 export { handleSubmit };
